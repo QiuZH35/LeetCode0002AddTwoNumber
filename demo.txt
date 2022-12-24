@@ -1,0 +1,55 @@
+//c
+struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2){
+	struct ListNode*prev=(struct ListNode*)malloc(sizeof(struct ListNode));//创建链表
+	struct ListNode*cur=prev;//可移动链表
+	struct ListNode*p1=l1,*p2=l2;
+	int carry=0;//进位值
+	while(p1||p2)
+	{
+		struct ListNode *temp=(struct ListNode*)malloc(sizeof(struct ListNode));//创建临时链表，用于存放新节点数据
+		cur->next=temp;
+		temp->next=NULL;
+		int x=(p1?p1->val:0);
+		int y=(p2?p2->val:0);//获取节点存放的数值
+		temp->val=(x+y+carry<=9?x+y+carry:(x+y+carry)%10);//临时节点存放数据
+		carry=(x+y+carry)/10;//计算进位后的进位值
+		cur=temp;		
+		p1=(p1?p1->next:NULL);
+		p2=(p2?p2->next:NULL);//指向写一个节点
+
+	}
+	if(carry)   //当循环结束后，如果进位值不为0则说明上一位相加的数值存在进位
+	{
+		struct ListNode *temp=(struct ListNode*)malloc(sizeof(struct ListNode));//创建临时链表，用于存放新节点数据
+		cur->next=temp;
+		temp->next=NULL;
+		temp->val=carry;
+		cur=temp;
+		
+	}
+	return prev->next;//下一个节点开始才是正常数据，因为第一个节点时初始化数据。
+
+}
+
+//c++
+ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+	ListNode*prev=new ListNode();//创建返回链表
+	ListNode*cur=prev;//可移动链表
+	int carry=0;//进位值
+	ListNode*p1=l1,*p2=l2;
+	while(p1||p2)
+	{
+		int x=p1?p1->val:0;
+		int y=p2?p2->val:0;
+		cur->next=new ListNode(((x+y+carry)<=9?x+y+carry:(x+y+carry)%10));//存放数据
+		carry=(x+y+carry)/10;
+		cur=cur->next;
+		
+		p1=p1?p1->next:nullptr;
+		p2=p2?p2->next:nullptr;//指向写一个节点
+	}	
+	cur->next=carry?new ListNode(carry):nullptr; //结尾进位值处理
+	
+	return prev->next;
+
+}
